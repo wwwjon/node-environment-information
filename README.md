@@ -1,6 +1,6 @@
 # Node Environment Information
 
-![Node Environment Information](https://raw.githubusercontent.com/dobrud/node-environment-information/master/screenshot.png]
+![Node Environment Information](https://raw.githubusercontent.com/dobrud/node-environment-information/master/screenshot.png)
 
 Node Environment Information provides you a brief overview of the environment information that is normally hidden behind your cloud providers curtain.
 
