@@ -1,0 +1,176 @@
+html
+  head
+    title Node Environment Information ⚙️🔍🎉 for #{system.hostname}
+    link(rel='stylesheet', href='/static/css/bulma.css')
+    link(rel='stylesheet', href='/static/css/font-awesome.min.css')
+    script(src='/static/js/jquery.min.js')
+    script(src='/static/js/tabs.js')
+    style th {width: 50%;}
+  body
+    section.hero.is-primary.is-bold.is-medium
+      div.hero-body
+        div.container
+          h1.title #{system.hostname}
+          h2.subtitle Node Environment Information ⚙️🔍🎉
+    nav.nav.has-shadow
+      div.container
+        div.nav-left
+          a.nav-item.is-tab(href='#general') General
+          a.nav-item.is-tab(href='#os') OS
+          a.nav-item.is-tab(href='#processors') Processor
+          a.nav-item.is-tab(href='#network') Network
+          a.nav-item.is-tab(href='#disk') Disk
+          a.nav-item.is-tab(href='#environment-variables') Environment Variables
+    section.section
+      div.container
+        h1.title(id='general') General Information
+        hr
+        nav.container.level
+          div.level-item.has-text-centered
+            div
+              p.heading Hostname
+              p.title #{system.hostname}
+          div.level-item.has-text-centered
+            div
+              p.heading Cores
+              p.title #{system.numberOfProcessors}
+          div.level-item.has-text-centered
+            div
+              p.heading Clock Speed
+              p.title #{system.processorSpeed}GHz
+          div.level-item.has-text-centered
+            div
+              p.heading RAM
+              p.title #{system.totalMemory}MB
+    section.section
+      div.container
+        h1.title(id='os') Operating System Information
+        hr
+        nav.container.level
+          div.level-item.has-text-centered
+            div
+              p.heading OS
+              p.title #{system.operatingSystem}
+          div.level-item.has-text-centered
+            div
+              p.heading OS Version
+              p.title #{system.operatingSystemVersion}
+          div.level-item.has-text-centered
+            div
+              p.heading Architecture
+              p.title #{system.operatingSystemArchitecture}
+          div.level-item.has-text-centered
+            div
+              p.heading Platform
+              p.title #{system.operatingSystemPlatform}
+    section.section
+      div.container
+        h1.title(id='memory') Memory Information
+        h2.subtitle All the random access memory.
+        hr
+        nav.container.level
+          div.level-item.has-text-centered
+            div
+              p.heading Allocated Memory
+              p.title #{system.allocatedMemory}MB
+          div.level-item.has-text-centered
+            div
+              p.heading Free System Memory
+              p.title #{system.freeMemory}MB
+          div.level-item.has-text-centered
+            div
+              p.heading Total System Memory
+              p.title #{system.totalMemory}MB
+        progress.progress.is-large.is-success(value=system.totalMemory-system.freeMemory, max=system.totalMemory)
+    section.section
+      div.container
+        h1.title(id='processors') Processor Information
+        hr
+        table.table.is-striped
+          thead
+            tr
+              th Available Cores
+              th Clock Speed
+          tbody
+            each processor in system.processors
+              tr
+                td #{processor.model}
+                td #{Math.round(processor.speed / 10) / 100}GHz
+    section.section
+      div.container
+        h1.title(id='network') Network Information
+        h2.subtitle See all information about the available network interfaces
+        hr
+        div.tabs.is-medium
+          ul
+            each networkInterface, index in system.networkInterfaces
+              li
+                a(href='#' + index) #{index}
+        div.tab
+          each networkInterface, index in system.networkInterfaces
+            div.tab-content(id=index)
+              p
+                span.tag.is-primary.is-large #{networkInterface[0].mac}
+              p &nbsp;
+              each networkAddress, index in networkInterface
+                table.table.is-striped
+                  thead
+                    tr
+                      th Setting
+                      th Value
+                  tbody
+                      tr
+                        td Adresse
+                        td #{networkAddress.address}
+                      tr
+                        td Netmask
+                        td #{networkAddress.netmask}
+                      tr
+                        td Family
+                        td
+                          if networkAddress.family == 'IPv6'
+                            span.tag.is-success #{networkAddress.family}
+                          else
+                            span.tag.is-info #{networkAddress.family}
+                      tr
+                        td Internal
+                        td #{networkAddress.internal}
+    section.section
+      div.container
+        h1.title(id='disk') Disk Information
+        hr
+        nav.container.level
+          div.level-item.has-text-centered
+            div
+              p.heading Available Disk Space
+              p.title #{system.availableDiskSpace}GB
+          div.level-item.has-text-centered
+            div
+              p.heading Free Disk Space
+              p.title #{system.freeDiskSpace}GB
+          div.level-item.has-text-centered
+            div
+              p.heading Total Disk Space
+              p.title #{system.totalDiskSpace}GB
+        progress.progress.is-large.is-success(value=system.availableDiskSpace, max=system.totalDiskSpace)
+    section.section
+      div.container
+        h1.title(id='environment-variables') Environment Variables
+        hr
+        table.table.is-striped
+          thead
+            tr
+              th Variable
+              th Value
+          tbody
+            each environmentVariable, index in system.environmentVariables
+              tr
+                td #{index}
+                td #{environmentVariable}
+    footer.footer
+      div.container
+        div.content.has-text-centered
+          p <strong>Node Environment Information</strong> by <a href="https://twitter.com/dobrud">Dominik Bruderer</a>. The source code is licensed <a href="https://opensource.org/licenses/mit-license.php">MIT</a>.
+          p
+            a.icon(href='https://github.com/dobrud/node-environment-info')
+              i.fa.fa-github
