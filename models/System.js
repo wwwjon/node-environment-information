@@ -18,7 +18,11 @@ class System {
   }
 
   get processorSpeed() {
-    return Math.round(this.processors[1].speed / 10) / 100;
+    if(this.processors[1].speed !== undefined) {
+      return Math.round(this.processors[1].speed / 10) / 100;
+    } else {
+      return 'n/A ';
+    }
   }
 
   get totalMemory() {
